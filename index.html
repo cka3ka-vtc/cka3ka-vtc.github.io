@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELITE CONVOY DLC / ETS 2 / ATS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #D14836;
+            --primary-dark: #A53A2B;
+            --secondary: #ECD06F;
+            --secondary-dark: #D9B84C;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --black: #000000;
+            --white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-600: #525252;
+            --gray-800: #262626;
+            --gray-900: #171717;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--gray-900);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Modern Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 16px 0;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 12px;
+        }
+
+        .logo-shape {
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo-icon {
+            font-size: 20px;
+            color: var(--white);
+            z-index: 2;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            transition: all 0.3s ease;
+            display: block;
+            font-size: 15px;
+        }
+
+        .nav-link:hover {
+            color: var(--black);
+        }
+
+        .nav-link.active {
+            color: var(--black);
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background: var(--black);
+            border-radius: 2px;
+            position: absolute;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-toggle span:nth-child(1) {
+            top: 6px;
+        }
+
+        .menu-toggle span:nth-child(2) {
+            top: 11px;
+        }
+
+        .menu-toggle span:nth-child(3) {
+            top: 16px;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            margin-bottom: 60px;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.1"><path fill="white" d="M500,250c138.07,0,250,111.93,250,250s-111.93,250-250,250s-250-111.93-250-250S361.93,250,500,250z M500,230c-149.04,0-270,120.96-270,270s120.96,270,270,270s270-120.96,270-270S649.04,230,500,230L500,230z"/></svg>') center/cover no-repeat;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        /* Game Sections */
+        .game-sections-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .game-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: -0.01em;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Cards Layout */
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            max-width: 100%;
+        }
+
+        .version-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .version-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.actual {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .status-badge.outdated {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        .version-number {
+            font-weight: 800;
+            color: var(--black);
+            font-size: 2.5rem;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .version-info {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            border: none;
+            text-decoration: none;
+        }
+
+        .download-btn.vr {
+            background: var(--secondary);
+            color: var(--black);
+        }
+
+        .download-btn.desktop {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .download-btn.vr:hover {
+            background: var(--secondary-dark);
+        }
+
+        .download-btn.desktop:hover {
+            background: var(--primary-dark);
+        }
+
+        .download-btn i {
+            font-size: 16px;
+        }
+
+        /* Update Status */
+        .update-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--white);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .update-status::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gray-900);
+            padding: 60px 0 30px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-info {
+            max-width: 400px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-shape {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .footer-text {
+            color: var(--gray-200);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--gray-200);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            padding: 8px 0;
+        }
+
+        .social-link:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .social-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray-800);
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        .copyright a {
+            color: var(--gray-200);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .copyright a:hover {
+            color: var(--white);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                padding: 100px 40px 40px;
+                transition: all 0.4s ease;
+                z-index: 99;
+                gap: 24px;
+                border-left: 1px solid var(--gray-200);
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .game-sections-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 160px 0 80px;
+                margin-bottom: 60px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .game-section {
+                margin-bottom: 60px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .version-card {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .version-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-container">
+                <a href="#" class="logo">
+                    <div class="logo-shape">
+                        <i class="logo-icon fas fa-truck-fast"></i>
+                    </div>
+                    <span class="logo-text">ELITE CONVOY</span>
+                </a>
+
+                <div class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item"><a href="#ets2" class="nav-link active">ETS 2</a></li>
+                    <li class="nav-item"><a href="#ats" class="nav-link">ATS</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Скачать DLC для ETS2 и ATS</h1>
+            <p>Актуальные версии DLC для Euro Truck Simulator 2 и American Truck Simulator</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="game-sections-container">
+            <section class="game-section" id="ets2">
+                <div class="section-header">
+                    <h2 class="section-title">Euro Truck Simulator 2</h2>
+                    <p class="section-subtitle">Покоряйте дороги Европы, перевозите грузы через континент и расширяйте свой автопарк</p>
+                </div>
+                <div class="cards-container">
+                    <div class="version-card">
+                        <div class="card-header">
+                            <div class="status-badge actual">Актуальная версия</div>
+                        </div>
+                        <div class="version-number">ETS2 1.57</div>
+                        <div class="download-options">
+                            <button class="download-btn vr">
+                                VR 1.57.1.1000
+                            </button>
+                            <button class="download-btn desktop">
+                                Desktop 1.57.2.4
+                            </button>
+                        </div>
+                    </div>
+                    <div class="version-card">
+                        <div class="card-header">
+                            <div class="status-badge outdated">Устаревшая версия</div>
+                        </div>
+                        <div class="version-number">ETS2 1.56</div>
+                        <div class="download-options">
+                            <button class="download-btn vr">
+                                VR 1.56.1.1000
+                            </button>
+                            <button class="download-btn desktop">
+                                Desktop 1.56.2.4
+                            </button>
+                        </div>
+                    </div>
+                    <div class="version-card">
+                        <div class="card-header">
+                            <div class="status-badge outdated">Устаревшая версия</div>
+                        </div>
+                        <div class="version-number">ETS2 1.55</div>
+                        <div class="download-options">
+                            <button class="download-btn vr">
+                                VR 1.55.1.1000
+                            </button>
+                            <button class="download-btn desktop">
+                                Desktop 1.55.2.4
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="game-section" id="ats">
+                <div class="section-header">
+                    <h2 class="section-title">American Truck Simulator</h2>
+                    <p class="section-subtitle">Исследуйте просторы Америки, от западного побережья до восточного</p>
+                </div>
+                <div class="cards-container">
+                    <div class="version-card">
+                        <div class="card-header">
+                            <div class="status-badge actual">Актуальная версия</div>
+                        </div>
+                        <div class="version-number">ATS 1.57</div>
+                        <div class="download-options">
+                            <button class="download-btn vr">
+                                VR 1.57.1.1000
+                            </button>
+                            <button class="download-btn desktop">
+                                Desktop 1.57.2.4
+                            </button>
+                        </div>
+                    </div>
+                    <div class="version-card">
+                        <div class="card-header">
+                            <div class="status-badge outdated">Устаревшая версия</div>
+                        </div>
+                        <div class="version-number">ATS 1.56</div>
+                        <div class="download-options">
+                            <button class="download-btn vr">
+                                VR 1.56.1.1000
+                            </button>
+                            <button class="download-btn desktop">
+                                Desktop 1.56.2.4
+                            </button>
+                        </div>
+                    </div>
+                    <div class="version-card">
+                        <div class="card-header">
+                            <div class="status-badge outdated">Устаревшая версия</div>
+                        </div>
+                        <div class="version-number">ATS 1.55</div>
+                        <div class="download-options">
+                            <button class="download-btn vr">
+                                VR 1.55.1.1000
+                            </button>
+                            <button class="download-btn desktop">
+                                Desktop 1.55.2.4
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <div class="footer-logo-shape">
+                            <i class="fas fa-truck-fast" style="color: white; font-size: 16px;"></i>
+                        </div>
+                        <span class="footer-logo-text">ELITE CONVOY</span>
+                    </div>
+                    <p class="footer-text">У нас ты всегда можешь скачать актуальные DLC, чтобы расширить географию рейсов с новыми регионами и грузами.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://vk.com/eliteconvoi1" class="social-link" target="_blank">
+                        <i class="fab fa-vk"></i>
+                        Наше VK сообщество
+                    </a>
+                    <a href="https://vk.com/eliteconvoy2" class="social-link" target="_blank">
+                        <i class="fab fa-vk"></i>
+                        Наши сборки карт
+                    </a>
+                    <a href="https://vk.com/eliteconvoy3" class="social-link" target="_blank">
+                        <i class="fab fa-vk"></i>
+                        Наше радио
+                    </a>
+                    <a href="https://t.me/ELITECONVOI" class="social-link" target="_blank">
+                        <i class="fab fa-telegram"></i>
+                        Наш telegram канал
+                    </a>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 ELITE CONVOY / дизайн by <a href="https://t.me/wdl59" target="_blank">wDl59</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking on links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Update active state
+                document.querySelectorAll('.nav-link').forEach(item => {
+                    item.classList.remove('active');
+                });
+                link.classList.add('active');
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.boxShadow = 'none';
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add animation to cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe version cards
+        document.querySelectorAll('.version-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
