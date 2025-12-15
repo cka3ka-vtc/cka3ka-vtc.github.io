@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cka3ka - Переправы и маршруты</title>
+    <!-- Фавикон -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Общие стили -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Стили для страницы переправ -->
+    <link rel="stylesheet" href="css/ferries.css">
+    <!-- Стили для переходов -->
+    <link rel="stylesheet" href="css/transitions.css">
+    <!-- Стили для анимаций -->
+    <style>
+        body {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <div class="container">
+        <!-- Контейнер для заголовка (будет загружен компонентом) -->
+        <div id="header-container"></div>
+
+        <main class="content">
+            <section class="controls-section animate">
+                <div class="controls-grid">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            id="searchInput" 
+                            placeholder="Поиск по стране, городам или расстоянию..."
+                        >
+                    </div>
+                    
+                    <select class="filter-select" id="countryFilter">
+                        <option value="">Все страны</option>
+                        <option value="Албания">Албания</option>
+                        <option value="Великобритания">Великобритания</option>
+                        <option value="Германия">Германия</option>
+                        <option value="Греция">Греция</option>
+                        <option value="Дания">Дания</option>
+                        <option value="Испания">Испания</option>
+                        <option value="Италия">Италия</option>
+                        <option value="Латвия">Латвия</option>
+                        <option value="Нидерланды">Нидерланды</option>
+                        <option value="Норвегия">Норвегия</option>
+                        <option value="Польша">Польша</option>
+                        <option value="Финляндия">Финляндия</option>
+                        <option value="Франция">Франция</option>
+                        <option value="Хорватия">Хорватия</option>
+                        <option value="Швеция">Швеция</option>
+                        <option value="Эстония">Эстония</option>
+                    </select>
+                    
+                    <select class="filter-select" id="sortSelect">
+                        <option value="country-asc">Сортировка: Страна (А-Я)</option>
+                        <option value="country-desc">Сортировка: Страна (Я-А)</option>
+                        <option value="route-asc">Сортировка: Маршрут (А-Я)</option>
+                        <option value="route-desc">Сортировка: Маршрут (Я-А)</option>
+                        <option value="distance-asc">Сортировка: Расстояние (по возрастанию)</option>
+                        <option value="distance-desc">Сортировка: Расстояние (по убыванию)</option>
+                    </select>
+                </div>
+                
+                <div class="stats delay-1">
+                    <div id="resultsCount">Всего 85 переправ</div>
+                    <button class="reset-btn" id="resetBtn">
+                        <i class="fas fa-redo"></i> Сбросить фильтры
+                    </button>
+                </div>
+            </section>
+
+            <section class="ferries-table-container delay-2">
+                <table class="ferries-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="country">
+                                Страна <i class="fas fa-sort"></i>
+                            </th>
+                            <th data-sort="route">
+                                Маршрут <i class="fas fa-sort"></i>
+                            </th>
+                            <th data-sort="distance">
+                                Расстояние <i class="fas fa-sort"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="ferries-table-wrapper">
+                    <table class="ferries-table">
+                        <tbody id="ferriesTableBody">
+                            <!-- Данные о переправах будут загружены через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <div class="pagination delay-3" id="pagination">
+                <!-- Пагинация будет создана через JavaScript -->
+            </div>
+        </main>
+
+        <!-- Контейнер для футера (будет загружен компонентом) -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- Компоненты -->
+    <script src="js/components.js"></script>
+    <!-- Навигация с плавными переходами -->
+    <script src="js/navigation.js"></script>
+    <!-- Скрипты для страницы переправ -->
+    <script src="js/ferries.js"></script>
+</body>
+</html>
